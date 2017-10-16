@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <ImageView
+        android:id="@+id/iv_product"
+        android:layout_width="120dip"
+        android:layout_height="70dip"
+        android:layout_alignTop="@+id/tv_product_name"
+        android:src="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_vendor_address"
+        android:layout_alignStart="@+id/tv_vendor_address"
+        android:text="Product 1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Price : " />
+
+    <TextView
+        android:id="@+id/tv_vendor_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_vendor_address"
+        android:layout_alignLeft="@+id/tv_vendor_address"
+        android:text="Vendor 1" />
+
+    <TextView
+        android:id="@+id/tv_vendor_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_product"
+        android:layout_marginLeft="34dp"
+        android:layout_marginStart="34dp"
+        android:layout_toRightOf="@+id/iv_product"
+        android:text="Pune" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/tv_vendor_address"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btn_call_vendor"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:text="Call Vendor" />
+
+        <Button
+            android:id="@+id/btn_remove_from_cart"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentBottom="true"
+            android:text="Remove from Cart" />
+    </LinearLayout>
+
+</RelativeLayout>
