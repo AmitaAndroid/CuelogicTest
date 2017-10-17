@@ -1,15 +1,23 @@
 package com.cuelogic.cuelogictest;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +27,7 @@ import java.util.ArrayList;
 
 public class CustomCartGridAdapter extends BaseAdapter {
     private Context mContext;
-    ArrayList<Product> productArrayList;
+    ArrayList<Product> productArrayList = new ArrayList<>();
 
     public CustomCartGridAdapter(Context c, ArrayList<Product> productArrayList) {
         mContext = c;
@@ -43,48 +51,58 @@ public class CustomCartGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
+
         View grid;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (convertView == null) {
+        if (convertView == null)
 
-            grid = new View(mContext);
+        {
             grid = inflater.inflate(R.layout.cart_item_view, null);
             ImageView imageView = (ImageView) grid.findViewById(R.id.iv_product);
             TextView textViewProductName = (TextView) grid.findViewById(R.id.tv_product_name);
             TextView textViewVendorName = (TextView) grid.findViewById(R.id.tv_vendor_name);
             TextView textViewVendorAddress = (TextView) grid.findViewById(R.id.tv_vendor_address);
             TextView textViewProductPrice = (TextView) grid.findViewById(R.id.tv_price);
+            Button btnCallVendor = (Button) grid.findViewById(R.id.btn_call_vendor);
+            Button btnRemoveFromCart = (Button) grid.findViewById(R.id.btn_remove_from_cart);
 
-            imageView.setImageBitmap(getBitmapFromURL(productArrayList.get(position).getImageUrl()));
+
+            Picasso.with(mContext).load(productArrayList.get(position).getImageUrl()).into(imageView);
+//            imageView.setImageBitmap(getBitmapFromURL(productArrayList.get(position).getImageUrl()));
             textViewProductName.setText(productArrayList.get(position).getName());
             textViewVendorName.setText(productArrayList.get(position).getVendorName());
             textViewVendorAddress.setText(productArrayList.get(position).getVendorAddress());
-            textViewProductPrice.setText(productArrayList.get(position).getPrice()+"");
-        } else {
+            textViewProductPrice.setText("Price: Rs. " + productArrayList.get(position).getPrice());
+
+            btnCallVendor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+                    phoneIntent.setData(Uri.parse("tel:"+MainActivity.cartArrayList.get(position).getPhoneNo()));
+                    if (ActivityCompat.checkSelfPermission(mContext,
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    mContext.startActivity(phoneIntent);
+                }
+            });
+
+            btnRemoveFromCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MainActivity.cartArrayList.remove(position);
+                }
+            });
+        } else
+
+        {
             grid = (View) convertView;
         }
 
-        return grid;
-    }
 
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.e("src",src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
-        }
+        return grid;
     }
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="300dp"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,10 +13,11 @@
 
         <ImageView
             android:id="@+id/iv_product"
-            android:layout_width="250dp"
-            android:layout_height="200dip"
+            android:layout_width="140dp"
+            android:layout_height="100dip"
             android:layout_centerHorizontal="true"
-            android:src="@color/colorAccent" />
+            android:src="@color/colorAccent"
+            />
 
         <TextView
             android:id="@+id/tv_product_name"
@@ -23,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_product"
             android:layout_centerInParent="true"
-            android:layout_marginTop="50dip"
+            android:layout_marginTop="20dip"
             android:text="Product 1"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -34,16 +36,15 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_product_name"
             android:layout_centerInParent="true"
-            android:layout_marginTop="15dip"
             android:text="Price : " />
 
         <TextView
             android:id="@+id/tv_vendor_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_product_name"
+            android:layout_below="@+id/tv_price"
             android:layout_centerInParent="true"
-            android:layout_marginTop="50dip"
+            android:layout_marginTop="20dip"
             android:text="Vendor 1" />
 
         <TextView
@@ -52,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_vendor_name"
             android:layout_centerInParent="true"
-            android:layout_marginTop="10dip"
+            android:layout_marginTop="5dip"
             android:text="Pune" />
 
     </RelativeLayout>
@@ -61,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tv_vendor_address"
         android:layout_alignParentBottom="true"
         android:text="Add to Cart" />
-</RelativeLayout>
+</LinearLayout>
