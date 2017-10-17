@@ -3,7 +3,6 @@ package com.cuelogic.cuelogictest.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -93,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             product.setPhoneNo(res.getString(res.getColumnIndex(PHONE)));
             product.setPrice(Integer.parseInt(res.getString(res.getColumnIndex(PRICE))));
             product.setImageUrl(res.getString(res.getColumnIndex(IMAGE_URL)));
-            product.setInCart(Integer.parseInt(res.getString(res.getColumnIndex(IS_IN_CART))));
+//            product.setInCart(Integer.parseInt(res.getString(res.getColumnIndex(IS_IN_CART))));
 
             array_list.add(product);
             res.moveToNext();

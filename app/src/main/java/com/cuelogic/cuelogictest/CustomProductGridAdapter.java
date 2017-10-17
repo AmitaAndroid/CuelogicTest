@@ -1,9 +1,6 @@
 package com.cuelogic.cuelogictest;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class CustomProductGridAdapter extends BaseAdapter {
@@ -68,6 +67,9 @@ public class CustomProductGridAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     MainActivity.cartArrayList.add(MainActivity.productArrayList.get(position));
+                    Toast.makeText(v.getContext(), "Added to Cart", Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
+
                 }
             });
         } else {
@@ -76,32 +78,4 @@ public class CustomProductGridAdapter extends BaseAdapter {
 
         return grid;
     }
-
-    /*public static Bitmap getBitmapFromURL(String src) {
-        Bitmap bitmap = null;
-        InputStream in = null;
-        BufferedOutputStream out = null;
-
-        try {
-            in = new BufferedInputStream(new URL(url).openStream(), IO_BUFFER_SIZE);
-
-            final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-            out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
-            copy(in, out);
-            out.flush();
-
-            final byte[] data = dataStream.toByteArray();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            //options.inSampleSize = 1;
-
-            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-        } catch (IOException e) {
-            Log.e(TAG, "Could not load Bitmap from: " + url);
-        } finally {
-            closeStream(in);
-            closeStream(out);
-        }
-
-        return bitmap;
-    }*/
 }

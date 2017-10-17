@@ -10,8 +10,9 @@ public class Product implements Parcelable{
     String name;
     String vendorName, vendorAddress;
     String phoneNo;
-    int isInCart;
+//    int isInCart;
 
+/*
     public int isInCart() {
         return isInCart;
     }
@@ -19,15 +20,15 @@ public class Product implements Parcelable{
     public void setInCart(int inCart) {
         isInCart = inCart;
     }
+*/
 
-    public Product(int price, String name, String vendorName, String vendorAddress, String imageUrl, String phoneNo, int isInCart) {
+    public Product(int price, String name, String vendorName, String vendorAddress, String imageUrl, String phoneNo) {
         this.price = price;
         this.name = name;
         this.vendorName = vendorName;
         this.vendorAddress = vendorAddress;
         this.imageUrl = imageUrl;
         this.phoneNo = phoneNo;
-        this.isInCart=isInCart;
     }
 
     protected Product(Parcel in) {
@@ -37,7 +38,7 @@ public class Product implements Parcelable{
         vendorName = in.readString();
         vendorAddress = in.readString();
         phoneNo = in.readString();
-        isInCart=in.readInt();
+//        isInCart=in.readInt();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -116,7 +117,7 @@ public class Product implements Parcelable{
         dest.writeString(vendorName);
         dest.writeString(vendorAddress);
         dest.writeString(phoneNo);
-        dest.writeInt(isInCart);
+//        dest.writeInt(isInCart);
 
     }
 }

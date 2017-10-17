@@ -4,11 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +13,22 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class CustomCartGridAdapter extends BaseAdapter {
     private Context mContext;
     ArrayList<Product> productArrayList = new ArrayList<>();
+    TextView textViewTotalPrice;
 
-    public CustomCartGridAdapter(Context c, ArrayList<Product> productArrayList) {
+    public CustomCartGridAdapter(Context c, ArrayList<Product> productArrayList, TextView textViewTotalPrice) {
         mContext = c;
         this.productArrayList.clear();
         this.productArrayList.addAll(productArrayList);
+        this.textViewTotalPrice = textViewTotalPrice;
     }
 
     @Override
@@ -57,9 +53,7 @@ public class CustomCartGridAdapter extends BaseAdapter {
         View grid;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (convertView == null)
-
-        {
+        if (convertView == null) {
             grid = inflater.inflate(R.layout.cart_item_view, null);
             ImageView imageView = (ImageView) grid.findViewById(R.id.iv_product);
             TextView textViewProductName = (TextView) grid.findViewById(R.id.tv_product_name);
@@ -67,21 +61,21 @@ public class CustomCartGridAdapter extends BaseAdapter {
             TextView textViewVendorAddress = (TextView) grid.findViewById(R.id.tv_vendor_address);
             TextView textViewProductPrice = (TextView) grid.findViewById(R.id.tv_price);
             Button btnCallVendor = (Button) grid.findViewById(R.id.btn_call_vendor);
+
             Button btnRemoveFromCart = (Button) grid.findViewById(R.id.btn_remove_from_cart);
 
-
             Picasso.with(mContext).load(productArrayList.get(position).getImageUrl()).into(imageView);
-//            imageView.setImageBitmap(getBitmapFromURL(productArrayList.get(position).getImageUrl()));
             textViewProductName.setText(productArrayList.get(position).getName());
             textViewVendorName.setText(productArrayList.get(position).getVendorName());
             textViewVendorAddress.setText(productArrayList.get(position).getVendorAddress());
             textViewProductPrice.setText("Price: Rs. " + productArrayList.get(position).getPrice());
+            textViewTotalPrice.setText("Total Price: " + calculateTotalPrice());
 
             btnCallVendor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent phoneIntent = new Intent(Intent.ACTION_CALL);
-                    phoneIntent.setData(Uri.parse("tel:"+MainActivity.cartArrayList.get(position).getPhoneNo()));
+                    phoneIntent.setData(Uri.parse("tel:" + MainActivity.cartArrayList.get(position).getPhoneNo()));
                     if (ActivityCompat.checkSelfPermission(mContext,
                             Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         return;
@@ -93,16 +87,28 @@ public class CustomCartGridAdapter extends BaseAdapter {
             btnRemoveFromCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MainActivity.cartArrayList.remove(position);
+                    if (MainActivity.cartArrayList.size() > 0) {
+                        MainActivity.cartArrayList.remove(position);
+                        Toast.makeText(v.getContext(), "Removed from Cart", Toast.LENGTH_SHORT).show();
+                        textViewTotalPrice.setText("Total Price: " + calculateTotalPrice());
+                        notifyDataSetChanged();
+                    }
+
                 }
             });
-        } else
-
-        {
+        } else {
             grid = (View) convertView;
         }
 
 
         return grid;
+    }
+
+    private int calculateTotalPrice() {
+        int totalPrice = 0;
+        for (int i = 0; i < MainActivity.cartArrayList.size(); i++) {
+            totalPrice += MainActivity.cartArrayList.get(i).getPrice();
+        }
+        return totalPrice;
     }
 }

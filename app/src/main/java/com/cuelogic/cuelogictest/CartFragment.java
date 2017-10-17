@@ -1,29 +1,44 @@
 package com.cuelogic.cuelogictest;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+public class CartFragment extends Fragment implements IUpdate{
 
-public class CartFragment extends Fragment {
-
+    GridView gridView;
     CustomCartGridAdapter customCartGridAdapter;
+    TextView textViewTotalPrice;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
-        customCartGridAdapter=new CustomCartGridAdapter(getActivity(),MainActivity.cartArrayList);
+        gridView=(GridView)view.findViewById(R.id.gv_cart);
+        textViewTotalPrice=(TextView)view.findViewById(R.id.tv_total_price);
+        customCartGridAdapter=new CustomCartGridAdapter(getActivity(),MainActivity.cartArrayList,textViewTotalPrice );
 
-        customCartGridAdapter.notifyDataSetChanged();
-
+        gridView.setAdapter(customCartGridAdapter);
         return view;
+    }
+
+    @Override
+    public void updateFragment() {
+//        gridView.setAdapter(customCartGridAdapter);
+//        customCartGridAdapter.notifyDataSetChanged();
+       getFragmentManager()
+                .beginTransaction()
+                .detach(this)
+                .attach(this)
+                .commit();
     }
 }
