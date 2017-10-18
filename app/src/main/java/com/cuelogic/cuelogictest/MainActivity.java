@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,9 +54,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        setupViewPager(viewPager);
 
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                adapter.notifyDataSetChanged();
+                setupTabIcons();
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -63,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-//                 adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
+                setupTabIcons();
                  /*switch (position) {
                      case 0:
                          ProductFragment productFragment=new ProductFragment();
@@ -83,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         new GetProducts().execute();
-//cartArrayList.add(new Product(2000, "Product 1", "Vendor 1", "Pune","https://placeholdit.imgix.net/~text?txtsize=70&txt=Product+5&w=500&h=500&txttrack=0","+919999999997"));
+        setupViewPager(viewPager);
+        //cartArrayList.add(new Product(2000, "Product 1", "Vendor 1", "Pune","https://placeholdit.imgix.net/~text?txtsize=70&txt=Product+5&w=500&h=500&txttrack=0","+919999999997"));
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -96,11 +105,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ProductFragment productFragment = new ProductFragment();/*
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("ProductArrayList", productArrayList);
-        productFragment.setArguments(bundle);*/
-        adapter.addFrag(productFragment, "Product");
+        adapter.addFrag(new ProductFragment(), "Product");
         adapter.addFrag(new CartFragment(), "Cart");
         viewPager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -122,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return mFragmentList.size();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         public void addFrag(Fragment fragment, String title) {
@@ -188,21 +198,11 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.productArrayList.add(product);
                     }
                 } catch (final JSONException e) {
-/*
-                    Toast.makeText(getContext(),
-                            "Json parsing error: " + e.getMessage(),
-                            Toast.LENGTH_LONG)
-                            .show();
-*/
-
+                    Toast.makeText(MainActivity.this, "Json parsing error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             } else {
-/*
-                Toast.makeText(getContext(),
-                        "Couldn't get json from server.",
-                        Toast.LENGTH_LONG)
-                        .show();
-*/
+                Toast.makeText(MainActivity.this, "Couldn't get json from server.", Toast.LENGTH_SHORT).show();
+
             }
             return null;
         }

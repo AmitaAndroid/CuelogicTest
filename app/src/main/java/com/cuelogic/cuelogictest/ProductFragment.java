@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-public class ProductFragment extends Fragment implements IUpdate{
+public class ProductFragment extends Fragment{
 
     GridView gridView;
     CustomProductGridAdapter customProductGridAdapter;
@@ -29,14 +29,4 @@ public class ProductFragment extends Fragment implements IUpdate{
         return view;
     }
 
-    @Override
-    public void updateFragment() {
-//        gridView.setAdapter(customProductGridAdapter);
-//        customProductGridAdapter.notifyDataSetChanged();
-        getFragmentManager()
-                .beginTransaction()
-                .detach(this)
-                .attach(this)
-                .commit();
-    }
 }

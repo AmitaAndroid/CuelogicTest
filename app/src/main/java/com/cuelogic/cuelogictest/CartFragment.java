@@ -11,7 +11,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CartFragment extends Fragment implements IUpdate{
+public class CartFragment extends Fragment {
 
     GridView gridView;
     CustomCartGridAdapter customCartGridAdapter;
@@ -23,22 +23,11 @@ public class CartFragment extends Fragment implements IUpdate{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
-        gridView=(GridView)view.findViewById(R.id.gv_cart);
-        textViewTotalPrice=(TextView)view.findViewById(R.id.tv_total_price);
-        customCartGridAdapter=new CustomCartGridAdapter(getActivity(),MainActivity.cartArrayList,textViewTotalPrice );
+        gridView = (GridView) view.findViewById(R.id.gv_cart);
+        textViewTotalPrice = (TextView) view.findViewById(R.id.tv_total_price);
+        customCartGridAdapter = new CustomCartGridAdapter(getActivity(), MainActivity.cartArrayList, textViewTotalPrice);
 
         gridView.setAdapter(customCartGridAdapter);
         return view;
-    }
-
-    @Override
-    public void updateFragment() {
-//        gridView.setAdapter(customCartGridAdapter);
-//        customCartGridAdapter.notifyDataSetChanged();
-       getFragmentManager()
-                .beginTransaction()
-                .detach(this)
-                .attach(this)
-                .commit();
     }
 }

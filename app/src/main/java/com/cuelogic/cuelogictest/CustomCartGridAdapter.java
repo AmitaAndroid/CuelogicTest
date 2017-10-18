@@ -92,9 +92,9 @@ public class CustomCartGridAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     if (MainActivity.cartArrayList.size() > 0) {
                         MainActivity.cartArrayList.remove(position);
+                        productArrayList.remove(position);
                         Toast.makeText(v.getContext(), "Removed from Cart", Toast.LENGTH_SHORT).show();
                         textViewTotalPrice.setText("Total Price: " + calculateTotalPrice());
-                        notifyDataSetChanged();
                     }
 
                 }
@@ -112,6 +112,7 @@ public class CustomCartGridAdapter extends BaseAdapter {
         for (int i = 0; i < MainActivity.cartArrayList.size(); i++) {
             totalPrice += MainActivity.cartArrayList.get(i).getPrice();
         }
+        this.notifyDataSetChanged();
         return totalPrice;
     }
 }
