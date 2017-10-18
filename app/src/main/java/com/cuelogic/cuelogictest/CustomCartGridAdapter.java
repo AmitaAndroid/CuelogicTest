@@ -1,10 +1,12 @@
 package com.cuelogic.cuelogictest;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,11 +78,12 @@ public class CustomCartGridAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Intent phoneIntent = new Intent(Intent.ACTION_CALL);
                     phoneIntent.setData(Uri.parse("tel:" + MainActivity.cartArrayList.get(position).getPhoneNo()));
-                    if (ActivityCompat.checkSelfPermission(mContext,
-                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        return;
+                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.CALL_PHONE}, 200);
+                    } else {
+                        mContext.startActivity(phoneIntent);
                     }
-                    mContext.startActivity(phoneIntent);
                 }
             });
 
