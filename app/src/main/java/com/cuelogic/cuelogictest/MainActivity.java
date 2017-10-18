@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.product_icon,
             R.drawable.cart_icon
     };
-    public static ArrayList<Product> cartArrayList=new ArrayList<>();
-    public static ArrayList<Product> productArrayList=new ArrayList<>();
+    public static ArrayList<Product> cartArrayList = new ArrayList<>();
+    public static ArrayList<Product> productArrayList = new ArrayList<>();
 
     private static String url = "https://mobiletest-hackathon.herokuapp.com/getdata/";
 
@@ -55,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
         });
         setupViewPager(viewPager);
 
-         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-             @Override
-             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-             }
+            }
 
-             @Override
-             public void onPageSelected(int position) {
+            @Override
+            public void onPageSelected(int position) {
 //                 adapter.notifyDataSetChanged();
                  /*switch (position) {
                      case 0:
@@ -75,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
                          cartFragment.updateFragment();
                          break;
                  }*/
-             }
+            }
 
-             @Override
-             public void onPageScrollStateChanged(int state) {
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
-             }
-         });
+            }
+        });
         new GetProducts().execute();
 //cartArrayList.add(new Product(2000, "Product 1", "Vendor 1", "Pune","https://placeholdit.imgix.net/~text?txtsize=70&txt=Product+5&w=500&h=500&txttrack=0","+919999999997"));
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ProductFragment productFragment=new ProductFragment();/*
+        ProductFragment productFragment = new ProductFragment();/*
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("ProductArrayList", productArrayList);
         productFragment.setArguments(bundle);*/
