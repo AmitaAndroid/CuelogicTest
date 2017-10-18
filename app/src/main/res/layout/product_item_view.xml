@@ -2,22 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="200dp"
     android:layout_height="300dp"
+    android:background="@drawable/grid_row_border"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp">
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/iv_product"
             android:layout_width="140dp"
             android:layout_height="100dip"
             android:layout_centerHorizontal="true"
-            android:src="@color/colorAccent"
-            />
+            android:src="@color/colorAccent" />
 
         <TextView
             android:id="@+id/tv_product_name"
@@ -26,6 +24,7 @@
             android:layout_below="@+id/iv_product"
             android:layout_centerInParent="true"
             android:layout_marginTop="20dip"
+            android:textColor="@color/colorPrimary"
             android:text="Product 1"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -57,12 +56,19 @@
             android:text="Pune" />
 
     </RelativeLayout>
-    <Button
-        android:id="@+id/btn_add_to_cart"
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ff69b4"/>
+    <TextView
+        android:id="@+id/tv_add_to_cart"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/tv_vendor_address"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_below="@+id/tv_vendor_address"
+        android:textStyle="bold"
+        android:background="@color/colorAccent"
         android:text="Add to Cart" />
 </LinearLayout>

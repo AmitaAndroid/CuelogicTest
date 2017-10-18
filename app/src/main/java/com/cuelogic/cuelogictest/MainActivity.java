@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ProgressDialog pDialog;
-    ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+    ViewPagerAdapter adapter;
     private int[] tabIcons = {
             R.drawable.product_icon,
             R.drawable.cart_icon
@@ -44,10 +45,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        new GetProducts().execute();
+//        Fragment fragment=new ProductFragment();
+//        getFragmentManager().beginTransaction().ddetach(fragment).attach(fragment).commit();
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        setSupportActionBar(toolbar);
+
         viewPager.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -60,8 +66,12 @@ public class MainActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 adapter.notifyDataSetChanged();
                 setupTabIcons();
+                setToolbarHeading();
             }
         });
+        for (int i=0;i<productArrayList.size();i++){
+            Toast.makeText(this,productArrayList.get(i).getName(),Toast.LENGTH_SHORT);
+        }
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -72,17 +82,6 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 adapter.notifyDataSetChanged();
                 setupTabIcons();
-                 /*switch (position) {
-                     case 0:
-                         ProductFragment productFragment=new ProductFragment();
-                         productFragment.updateFragment();
-                         break;
-
-                     case 1:
-                         CartFragment cartFragment=new CartFragment();
-                         cartFragment.updateFragment();
-                         break;
-                 }*/
             }
 
             @Override
@@ -90,13 +89,39 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        new GetProducts().execute();
         setupViewPager(viewPager);
-        //cartArrayList.add(new Product(2000, "Product 1", "Vendor 1", "Pune","https://placeholdit.imgix.net/~text?txtsize=70&txt=Product+5&w=500&h=500&txttrack=0","+919999999997"));
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        productArrayList.add(new Product(2000, "Product 1", "Vendor 1", "Pune","https://placeholdit.imgix.net/~text?txtsize=70&txt=Product+5&w=500&h=500&txttrack=0","+919999999997"));
+
+
         tabLayout.setupWithViewPager(viewPager);
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        toolbar.setTitle("Shop");
+                        break;
+                    case 1:
+                        toolbar.setTitle("Cart");
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         setupTabIcons();
+    }
+
+    private void setToolbarHeading() {
     }
 
     private void setupTabIcons() {
@@ -174,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
                     JSONArray products = jsonObj.getJSONArray("products");
 
-                    MainActivity.productArrayList.clear();
+                    productArrayList.clear();
                     for (int i = 0; i < products.length(); i++) {
                         JSONObject c = products.getJSONObject(i);
 /*
@@ -195,8 +220,9 @@ public class MainActivity extends AppCompatActivity {
                         product.setImageUrl(c.getString("productImg"));
 //                        product.setInCart(0);
 
-                        MainActivity.productArrayList.add(product);
+                        productArrayList.add(product);
                     }
+                    new ProductFragment();
                 } catch (final JSONException e) {
                     Toast.makeText(MainActivity.this, "Json parsing error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -210,6 +236,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+
+            for (int i=0;i<productArrayList.size();i++){
+                Toast.makeText(getApplicationContext(),productArrayList.get(i).getName(),Toast.LENGTH_SHORT);
+            }
             if (pDialog.isShowing())
                 pDialog.dismiss();
         }

@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class CustomProductGridAdapter extends BaseAdapter {
@@ -54,7 +56,7 @@ public class CustomProductGridAdapter extends BaseAdapter {
             TextView textViewVendorName = (TextView) grid.findViewById(R.id.tv_vendor_name);
             TextView textViewVendorAddress = (TextView) grid.findViewById(R.id.tv_vendor_address);
             TextView textViewProductPrice = (TextView) grid.findViewById(R.id.tv_price);
-            Button btnAddToCart = (Button) grid.findViewById(R.id.btn_add_to_cart);
+            TextView btnAddToCart = (TextView) grid.findViewById(R.id.tv_add_to_cart);
 
             Picasso.with(mContext).load(productArrayList.get(position).getImageUrl()).into(imageView);
 //            imageView.setImageBitmap(getBitmapFromURL(productArrayList.get(position).getImageUrl()));
