@@ -5,14 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -43,7 +40,6 @@ public class CustomProductGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View grid;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -59,7 +55,6 @@ public class CustomProductGridAdapter extends BaseAdapter {
             TextView btnAddToCart = (TextView) grid.findViewById(R.id.tv_add_to_cart);
 
             Picasso.with(mContext).load(productArrayList.get(position).getImageUrl()).into(imageView);
-//            imageView.setImageBitmap(getBitmapFromURL(productArrayList.get(position).getImageUrl()));
             textViewProductName.setText(productArrayList.get(position).getName());
             textViewVendorName.setText(productArrayList.get(position).getVendorName());
             textViewVendorAddress.setText(productArrayList.get(position).getVendorAddress());

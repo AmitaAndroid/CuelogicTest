@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -49,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         new GetProducts().execute();
-//        Fragment fragment=new ProductFragment();
-//        getFragmentManager().beginTransaction().ddetach(fragment).attach(fragment).commit();
+
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         setSupportActionBar(toolbar);
 
@@ -66,12 +64,9 @@ public class MainActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 adapter.notifyDataSetChanged();
                 setupTabIcons();
-                setToolbarHeading();
             }
         });
-        for (int i=0;i<productArrayList.size();i++){
-            Toast.makeText(this,productArrayList.get(i).getName(),Toast.LENGTH_SHORT);
-        }
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -89,9 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        setupViewPager(viewPager);
-        productArrayList.add(new Product(2000, "Product 1", "Vendor 1", "Pune","https://placeholdit.imgix.net/~text?txtsize=70&txt=Product+5&w=500&h=500&txttrack=0","+919999999997"));
 
+        setupViewPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -119,9 +113,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         setupTabIcons();
-    }
-
-    private void setToolbarHeading() {
     }
 
     private void setupTabIcons() {
@@ -171,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    class GetProducts extends AsyncTask<Void, Void, Void> {
+    class GetProducts extends AsyncTask<Void, Void, ArrayList<Product>> {
 
         @Override
         protected void onPreExecute() {
@@ -185,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... arg0) {
+        protected ArrayList<Product> doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
@@ -196,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-
                     JSONArray products = jsonObj.getJSONArray("products");
 
                     productArrayList.clear();
@@ -211,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
                         String phoneNumber = c.getString("phoneNumber");*/
 
                         Product product = new Product();
-
                         product.setName(c.getString("productname"));
                         product.setVendorName(c.getString("vendorname"));
                         product.setVendorAddress(c.getString("vendoraddress"));
@@ -222,27 +211,22 @@ public class MainActivity extends AppCompatActivity {
 
                         productArrayList.add(product);
                     }
-                    new ProductFragment();
                 } catch (final JSONException e) {
                     Toast.makeText(MainActivity.this, "Json parsing error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(MainActivity.this, "Couldn't get json from server.", Toast.LENGTH_SHORT).show();
-
             }
-            return null;
+            return productArrayList;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(ArrayList<Product> result) {
             super.onPostExecute(result);
 
-            for (int i=0;i<productArrayList.size();i++){
-                Toast.makeText(getApplicationContext(),productArrayList.get(i).getName(),Toast.LENGTH_SHORT);
-            }
+            adapter.notifyDataSetChanged();
             if (pDialog.isShowing())
                 pDialog.dismiss();
         }
-
     }
 }
